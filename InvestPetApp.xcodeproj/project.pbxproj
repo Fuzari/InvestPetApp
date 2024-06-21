@@ -8,17 +8,23 @@
 
 /* Begin PBXBuildFile section */
 		0795FD522C223F6400A3A0BE /* InvestPetAppApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0795FD512C223F6400A3A0BE /* InvestPetAppApp.swift */; };
-		0795FD542C223F6400A3A0BE /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0795FD532C223F6400A3A0BE /* ContentView.swift */; };
+		0795FD542C223F6400A3A0BE /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0795FD532C223F6400A3A0BE /* MainView.swift */; };
 		0795FD562C223F6500A3A0BE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0795FD552C223F6500A3A0BE /* Assets.xcassets */; };
 		0795FD592C223F6500A3A0BE /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0795FD582C223F6500A3A0BE /* Preview Assets.xcassets */; };
+		E157820D2C244202002F0E3C /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E157820C2C244202002F0E3C /* ViewModel.swift */; };
+		E157820F2C245207002F0E3C /* SharesListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E157820E2C245207002F0E3C /* SharesListView.swift */; };
+		E15782112C246DD8002F0E3C /* SharesListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E15782102C246DD8002F0E3C /* SharesListViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		0795FD4E2C223F6400A3A0BE /* InvestPetApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = InvestPetApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0795FD512C223F6400A3A0BE /* InvestPetAppApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvestPetAppApp.swift; sourceTree = "<group>"; };
-		0795FD532C223F6400A3A0BE /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		0795FD532C223F6400A3A0BE /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		0795FD552C223F6500A3A0BE /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		0795FD582C223F6500A3A0BE /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		E157820C2C244202002F0E3C /* ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModel.swift; sourceTree = "<group>"; };
+		E157820E2C245207002F0E3C /* SharesListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharesListView.swift; sourceTree = "<group>"; };
+		E15782102C246DD8002F0E3C /* SharesListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharesListViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -52,7 +58,10 @@
 			isa = PBXGroup;
 			children = (
 				0795FD512C223F6400A3A0BE /* InvestPetAppApp.swift */,
-				0795FD532C223F6400A3A0BE /* ContentView.swift */,
+				0795FD532C223F6400A3A0BE /* MainView.swift */,
+				E157820E2C245207002F0E3C /* SharesListView.swift */,
+				E15782102C246DD8002F0E3C /* SharesListViewModel.swift */,
+				E157820C2C244202002F0E3C /* ViewModel.swift */,
 				0795FD552C223F6500A3A0BE /* Assets.xcassets */,
 				0795FD572C223F6500A3A0BE /* Preview Content */,
 			);
@@ -95,7 +104,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1420;
-				LastUpgradeCheck = 1420;
+				LastUpgradeCheck = 1510;
 				TargetAttributes = {
 					0795FD4D2C223F6400A3A0BE = {
 						CreatedOnToolsVersion = 14.2;
@@ -137,7 +146,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0795FD542C223F6400A3A0BE /* ContentView.swift in Sources */,
+				E157820F2C245207002F0E3C /* SharesListView.swift in Sources */,
+				E15782112C246DD8002F0E3C /* SharesListViewModel.swift in Sources */,
+				0795FD542C223F6400A3A0BE /* MainView.swift in Sources */,
+				E157820D2C244202002F0E3C /* ViewModel.swift in Sources */,
 				0795FD522C223F6400A3A0BE /* InvestPetAppApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -181,6 +193,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -241,6 +254,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -275,6 +289,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -304,6 +319,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
