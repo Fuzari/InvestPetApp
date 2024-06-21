@@ -11,7 +11,7 @@ final class SharesListViewModel: ObservableObject {
     @Published var sharesList: [ShareModel] = []
     
     func loadShares() {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 5.0) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
             self.sharesList = [
                 ShareModel(name: "TBank"),
                 ShareModel(name: "VTB"),
