@@ -10,6 +10,8 @@ import Foundation
 final class SharesListViewModel: ObservableObject {
     @Published var sharesList: [ShareModel] = []
     
+    private let sharesService = SharesService()
+    
     func loadShares() {
         DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
             self.sharesList = [
@@ -17,6 +19,14 @@ final class SharesListViewModel: ObservableObject {
                 ShareModel(name: "VTB"),
                 ShareModel(name: "Sovcombank")
             ]
+        }
+        
+        Task {
+            do {
+                let _ = try await sharesService.loadShares()
+            } catch {
+                print(error.localizedDescription)
+            }
         }
     }
 }
