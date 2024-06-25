@@ -7,32 +7,18 @@
 
 import Foundation
 
-final class SharesListViewModel: ObservableObject {
-    @Published var sharesList: [ShareModel] = []
+@MainActor final class SharesListViewModel: ObservableObject {
+    @Published var instrumentsList: [InstrumentModel] = []
     
     private let sharesService = SharesService()
     
     func loadShares() {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
-            self.sharesList = [
-                ShareModel(name: "TBank"),
-                ShareModel(name: "VTB"),
-                ShareModel(name: "Sovcombank")
-            ]
-        }
-        
         Task {
             do {
-                let _ = try await sharesService.loadShares()
+                instrumentsList = try await sharesService.loadShares()
             } catch {
                 print(error.localizedDescription)
             }
         }
     }
-}
-
-
-struct ShareModel: Identifiable {
-    var id: UUID = UUID()
-    var name = "Sber"
 }

@@ -11,34 +11,35 @@ struct SharesListView: View {
     @ObservedObject var viewModel: SharesListViewModel
     
     var body: some View {
-        switch viewModel.sharesList.count {
+        switch viewModel.instrumentsList.count {
         case 0:
             ProgressView {
                 Text("Загрузка..")
             }
-            .onAppear(perform: {
+            .task {
                 viewModel.loadShares()
-            })
+            }
         default:
             Text("Список инструментов Сбербанка")
             
             List {
-                ForEach(viewModel.sharesList) { share in
-                    ShareView(share: share)
+                ForEach(viewModel.instrumentsList) { instrument in
+                    InstrumentView(instrument: instrument)
                 }
             }
         }
     }
 }
 
-struct ShareView: View {
+struct InstrumentView: View {
     
-    var share: ShareModel
+    var instrument: InstrumentModel
     
     var body: some View {
         HStack {
             Image(systemName: "circle")
-            Text(share.name)
+            Text(instrument.ticker)
+            Text(instrument.name)
         }
     }
 }
