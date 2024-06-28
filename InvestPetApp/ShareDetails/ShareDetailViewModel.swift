@@ -13,7 +13,11 @@ import Foundation
     
     func loadShareDetails() {
         Task {
-            let shareDetails = shareDetailsService.loadShareDetails()
+            do {
+                try await shareDetailsService.loadShareDetails()
+            } catch {
+                print(error)
+            }
         }
     }
 }
