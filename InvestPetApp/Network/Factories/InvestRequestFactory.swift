@@ -11,7 +11,7 @@ private extension String {
     static let token = "t.L8UWFin0Kkc9bmdatEA24Av096x_279VfN05JkMI2kz_t4P7eEIgikCw6YvhCfPrMbSoe_ceLbpU22un3UJqCw"
     static let authorizationHeader = "Authorization"
     static let authorizationValue = "Bearer \(String.token)"
-    static let contentTypeHeader = "application/json"
+    static let contentTypeHeader = "Content-Type"
     static let contentTypeValue = "application/json"
     static let acceptHeader = "accept"
 }
