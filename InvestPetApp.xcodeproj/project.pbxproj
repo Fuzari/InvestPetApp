@@ -19,6 +19,9 @@
 		E18F4F802C2C2301007EF81D /* ResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E18F4F7F2C2C2301007EF81D /* ResponseModel.swift */; };
 		E18FCD8D2C2C5348007EF81D /* InvestURLFactrory.swift in Sources */ = {isa = PBXBuildFile; fileRef = E18FCD8C2C2C5348007EF81D /* InvestURLFactrory.swift */; };
 		E18FCD8F2C2C5362007EF81D /* InvestRequestFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = E18FCD8E2C2C5362007EF81D /* InvestRequestFactory.swift */; };
+		E18FCD922C2DA6F6007EF81D /* ShareDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E18FCD912C2DA6F6007EF81D /* ShareDetailView.swift */; };
+		E18FCD942C2DA712007EF81D /* ShareDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E18FCD932C2DA712007EF81D /* ShareDetailViewModel.swift */; };
+		E18FCD962C2DA774007EF81D /* ShareDetailsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E18FCD952C2DA774007EF81D /* ShareDetailsService.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,6 +39,9 @@
 		E18F4F7F2C2C2301007EF81D /* ResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseModel.swift; sourceTree = "<group>"; };
 		E18FCD8C2C2C5348007EF81D /* InvestURLFactrory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvestURLFactrory.swift; sourceTree = "<group>"; };
 		E18FCD8E2C2C5362007EF81D /* InvestRequestFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvestRequestFactory.swift; sourceTree = "<group>"; };
+		E18FCD912C2DA6F6007EF81D /* ShareDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareDetailView.swift; sourceTree = "<group>"; };
+		E18FCD932C2DA712007EF81D /* ShareDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareDetailViewModel.swift; sourceTree = "<group>"; };
+		E18FCD952C2DA774007EF81D /* ShareDetailsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareDetailsService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -72,6 +78,7 @@
 				0795FD512C223F6400A3A0BE /* InvestPetAppApp.swift */,
 				0795FD532C223F6400A3A0BE /* MainView.swift */,
 				E15782122C259747002F0E3C /* SharesList */,
+				E18FCD902C2DA6C5007EF81D /* ShareDetails */,
 				E18F4F792C2C2263007EF81D /* Network */,
 				0795FD552C223F6500A3A0BE /* Assets.xcassets */,
 				0795FD572C223F6500A3A0BE /* Preview Content */,
@@ -123,6 +130,16 @@
 				E18FCD8E2C2C5362007EF81D /* InvestRequestFactory.swift */,
 			);
 			path = Factories;
+			sourceTree = "<group>";
+		};
+		E18FCD902C2DA6C5007EF81D /* ShareDetails */ = {
+			isa = PBXGroup;
+			children = (
+				E18FCD912C2DA6F6007EF81D /* ShareDetailView.swift */,
+				E18FCD932C2DA712007EF81D /* ShareDetailViewModel.swift */,
+				E18FCD952C2DA774007EF81D /* ShareDetailsService.swift */,
+			);
+			path = ShareDetails;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -196,14 +213,17 @@
 			buildActionMask = 2147483647;
 			files = (
 				E18FCD8D2C2C5348007EF81D /* InvestURLFactrory.swift in Sources */,
+				E18FCD922C2DA6F6007EF81D /* ShareDetailView.swift in Sources */,
 				E18F4F7B2C2C227E007EF81D /* RequestExecutor.swift in Sources */,
 				E157820F2C245207002F0E3C /* SharesListView.swift in Sources */,
 				E18FCD8F2C2C5362007EF81D /* InvestRequestFactory.swift in Sources */,
 				E15782112C246DD8002F0E3C /* SharesListViewModel.swift in Sources */,
 				E18F4F782C2C2213007EF81D /* InstrumentModel.swift in Sources */,
+				E18FCD942C2DA712007EF81D /* ShareDetailViewModel.swift in Sources */,
 				0795FD542C223F6400A3A0BE /* MainView.swift in Sources */,
 				0795FD522C223F6400A3A0BE /* InvestPetAppApp.swift in Sources */,
 				E18F4F802C2C2301007EF81D /* ResponseModel.swift in Sources */,
+				E18FCD962C2DA774007EF81D /* ShareDetailsService.swift in Sources */,
 				E15782142C25976B002F0E3C /* SharesService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

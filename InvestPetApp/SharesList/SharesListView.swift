@@ -22,8 +22,10 @@ struct SharesListView: View {
         default:
             Text("Список инструментов Сбербанка")
             
-            List {
-                ForEach(viewModel.instrumentsList) { instrument in
+            List(viewModel.instrumentsList, id: \.self) { instrument in
+                NavigationLink {
+                    ShareDetailView(viewModel: ShareDetailViewModel())
+                } label: {
                     InstrumentView(instrument: instrument)
                 }
             }
@@ -40,6 +42,7 @@ struct InstrumentView: View {
             Image(systemName: "circle")
             Text(instrument.ticker)
             Text(instrument.name)
+                .lineLimit(1)
         }
     }
 }

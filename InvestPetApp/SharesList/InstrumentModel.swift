@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct InstrumentModel: Decodable, Identifiable {
+struct InstrumentModel: Decodable, Identifiable, Hashable {
     
     enum InstrumentKind: String {
         case share = "INSTRUMENT_TYPE_SHARE"
