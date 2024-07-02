@@ -17,16 +17,25 @@ private extension String {
 
 final class ShareDetailsService: NSObject {
     
-    private var task: URLSessionWebSocketTask?
+    private var socket: URLSessionWebSocketTask?
     private lazy var urlSession = URLSession(configuration: .default, delegate: self, delegateQueue: nil)
+    private var task: Task<Void, Error>?
+    private var isConnected = false
+    
+    deinit {
+        task?.cancel()
+        socket = nil
+    }
     
     func loadShareDetails() async throws {
         try createTask()
+        socket?.resume()
         try await ping()
+        try await receiveData()
     }
     
     func cancelConnection() {
-        task?.cancel(with: .goingAway, reason: nil)
+        socket?.cancel(with: .goingAway, reason: nil)
     }
     
     private func createTask() throws {
@@ -36,9 +45,10 @@ final class ShareDetailsService: NSObject {
         
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
-//        request.addValue(.protocolValue, forHTTPHeaderField: "\(String.protocolHeader), \(String.token)")
+        request.addValue(.protocolValue, forHTTPHeaderField: "\(String.protocolHeader), \(String.token)")
+        request.addValue("json", forHTTPHeaderField: "WebSocket-Protocol")
         
-        task = urlSession.webSocketTask(with: request)
+        socket = urlSession.webSocketTask(with: url)
     }
     
     private func sendData() async throws {
@@ -53,11 +63,11 @@ final class ShareDetailsService: NSObject {
         
         let data = try JSONSerialization.data(withJSONObject: json)
         
-        try await task?.send(.data(data))
+        try await socket?.send(.data(data))
     }
     
     private func receiveData() async throws {
-        let message = try await task?.receive()
+        let message = try await socket?.receive()
         
         switch message {
         case .string(let string):
@@ -71,7 +81,8 @@ final class ShareDetailsService: NSObject {
         try await receiveData()
     }
     
-    private func ping() async throws{
+    private func ping() async throws {
+        guard isConnected else { return }
         let serverDateFormatter: DateFormatter = {
             let result = DateFormatter()
             result.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSS"
@@ -79,7 +90,7 @@ final class ShareDetailsService: NSObject {
             return result
         }()
         
-        let date = serverDateFormatter
+        print(serverDateFormatter.string(from: Date()))
         
         let json = [
             "ping": [
@@ -89,12 +100,16 @@ final class ShareDetailsService: NSObject {
         
         let data = try JSONSerialization.data(withJSONObject: json)
         
-        try await task?.send(.data(data))
-        try await ping()
+        task = Task {
+            guard let task, !task.isCancelled else { return }
+            try await Task.sleep(nanoseconds: 50_000_000) // 500 ms
+            try await socket?.send(.data(data))
+            try await ping()
+        }
     }
 }
 
-extension ShareDetailsService: URLSessionDelegate {
+extension ShareDetailsService: URLSessionWebSocketDelegate {
     
     func urlSession(
         _ session: URLSession,
@@ -102,6 +117,7 @@ extension ShareDetailsService: URLSessionDelegate {
         didOpenWithProtocol protocol: String?
     ) {
         print("Connection is opened.")
+        isConnected = true
     }
     
     func urlSession(
@@ -111,5 +127,7 @@ extension ShareDetailsService: URLSessionDelegate {
         reason: Data?
     ) {
         print("Connection was closed.")
+        isConnected = false
+        task?.cancel()
     }
 }
