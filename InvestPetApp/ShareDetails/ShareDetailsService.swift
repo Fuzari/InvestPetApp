@@ -8,8 +8,8 @@
 import Foundation
 
 private extension String {
-    static let host = "wss://invest-public-api.tinkoff.ru"
-    static let subURL = "/ws/tinkoff.public.invest.api.contract.v1.MarketDataStreamService/MarketDataStream"
+    static let host = "wss://invest-public-api.tinkoff.ru/ws"
+    static let subURL = "/tinkoff.public.invest.api.contract.v1.MarketDataStreamService/MarketDataStream"
     static let token = "t.L8UWFin0Kkc9bmdatEA24Av096x_279VfN05JkMI2kz_t4P7eEIgikCw6YvhCfPrMbSoe_ceLbpU22un3UJqCw"
     static let protocolHeader = "Sec-WebSocket-Protocol"
     static let protocolValue = "json"
@@ -23,15 +23,19 @@ final class ShareDetailsService: NSObject {
     private var isConnected = false
     
     deinit {
-        task?.cancel()
+        socket?.cancel()
         socket = nil
     }
     
     func loadShareDetails() async throws {
         try createTask()
         socket?.resume()
-        try await ping()
+//        try await sendData()
+//        try await ping()
         try await receiveData()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+            self.cancelConnection()
+        }
     }
     
     func cancelConnection() {
@@ -45,25 +49,32 @@ final class ShareDetailsService: NSObject {
         
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
-        request.addValue(.protocolValue, forHTTPHeaderField: "\(String.protocolHeader), \(String.token)")
-        request.addValue("json", forHTTPHeaderField: "WebSocket-Protocol")
+        request.addValue("Bearer \(String.token)", forHTTPHeaderField: "Authorization")
+        request.addValue("json", forHTTPHeaderField: "Sec-WebSocket-Protocol")
         
-        socket = urlSession.webSocketTask(with: url)
+        socket = urlSession.webSocketTask(with: request)
     }
     
-    private func sendData() async throws {
-        let json = [
-            "subscribeLastPriceRequest": [
-                "subscriptionAction": "SUBSCRIPTION_ACTION_SUBSCRIBE",
-                "instruments": [
-                    ["instrumentId": "e6123145-9665-43e0-8413-cd61b8aa9b13"]
-                ]
-            ]
-        ]
+    private func sendData() {
+        let model = SubscribeLastPriceRequestWrapper(
+            subscribeLastPriceRequest: SubscribeLastPriceRequest(
+                subscriptionAction: "SUBSCRIPTION_ACTION_SUBSCRIBE",
+                instruments: [Instrument(instrumentId: "e6123145-9665-43e0-8413-cd61b8aa9b13")]
+            )
+        )
         
-        let data = try JSONSerialization.data(withJSONObject: json)
+        let data: Data?
+        do {
+            data = try JSONEncoder().encode(model)
+        } catch {
+            print(error.localizedDescription)
+            return
+        }
         
-        try await socket?.send(.data(data))
+        guard let data else { return }
+        Task {
+            try await socket?.send(.data(data))
+        }
     }
     
     private func receiveData() async throws {
@@ -102,7 +113,7 @@ final class ShareDetailsService: NSObject {
         
         task = Task {
             guard let task, !task.isCancelled else { return }
-            try await Task.sleep(nanoseconds: 50_000_000) // 500 ms
+            try await Task.sleep(nanoseconds: 50_000_000) // 50 ms
             try await socket?.send(.data(data))
             try await ping()
         }
@@ -118,6 +129,7 @@ extension ShareDetailsService: URLSessionWebSocketDelegate {
     ) {
         print("Connection is opened.")
         isConnected = true
+        sendData()
     }
     
     func urlSession(
@@ -126,8 +138,24 @@ extension ShareDetailsService: URLSessionWebSocketDelegate {
         didCloseWith closeCode: URLSessionWebSocketTask.CloseCode,
         reason: Data?
     ) {
-        print("Connection was closed.")
+        let reason = String(data: reason!, encoding: .utf8)
+        print("Connection was closed. Close code: \(closeCode). Reason: \(String(describing: reason))")
         isConnected = false
         task?.cancel()
     }
+}
+
+struct SubscribeLastPriceRequestWrapper: Codable {
+    let subscribeLastPriceRequest: SubscribeLastPriceRequest
+}
+
+// Модель данных подписки на последнюю цену
+struct SubscribeLastPriceRequest: Codable {
+    let subscriptionAction: String
+    let instruments: [Instrument]
+}
+
+// Модель инструмента
+struct Instrument: Codable {
+    let instrumentId: String
 }
