@@ -14,6 +14,9 @@
 		E157820F2C245207002F0E3C /* SharesListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E157820E2C245207002F0E3C /* SharesListView.swift */; };
 		E15782112C246DD8002F0E3C /* SharesListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E15782102C246DD8002F0E3C /* SharesListViewModel.swift */; };
 		E15782142C25976B002F0E3C /* SharesService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E15782132C25976B002F0E3C /* SharesService.swift */; };
+		E18F31E12C35B90A007EF81D /* LastPriceResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E18F31E02C35B90A007EF81D /* LastPriceResponseModel.swift */; };
+		E18F31E52C35BE2A007EF81D /* LastPriceMessageModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E18F31E42C35BE2A007EF81D /* LastPriceMessageModel.swift */; };
+		E18F31E72C35D1B9007EF81D /* SubscribeLastPriceResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = E18F31E62C35D1B9007EF81D /* SubscribeLastPriceResponse.swift */; };
 		E18F4F782C2C2213007EF81D /* InstrumentModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E18F4F772C2C2213007EF81D /* InstrumentModel.swift */; };
 		E18F4F7B2C2C227E007EF81D /* RequestExecutor.swift in Sources */ = {isa = PBXBuildFile; fileRef = E18F4F7A2C2C227E007EF81D /* RequestExecutor.swift */; };
 		E18F4F802C2C2301007EF81D /* ResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E18F4F7F2C2C2301007EF81D /* ResponseModel.swift */; };
@@ -33,6 +36,9 @@
 		E157820E2C245207002F0E3C /* SharesListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharesListView.swift; sourceTree = "<group>"; };
 		E15782102C246DD8002F0E3C /* SharesListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharesListViewModel.swift; sourceTree = "<group>"; };
 		E15782132C25976B002F0E3C /* SharesService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharesService.swift; sourceTree = "<group>"; };
+		E18F31E02C35B90A007EF81D /* LastPriceResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LastPriceResponseModel.swift; sourceTree = "<group>"; };
+		E18F31E42C35BE2A007EF81D /* LastPriceMessageModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LastPriceMessageModel.swift; sourceTree = "<group>"; };
+		E18F31E62C35D1B9007EF81D /* SubscribeLastPriceResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscribeLastPriceResponse.swift; sourceTree = "<group>"; };
 		E18F4E912C2B42A8007EF81D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		E18F4F772C2C2213007EF81D /* InstrumentModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstrumentModel.swift; sourceTree = "<group>"; };
 		E18F4F7A2C2C227E007EF81D /* RequestExecutor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestExecutor.swift; sourceTree = "<group>"; };
@@ -105,6 +111,24 @@
 			path = SharesList;
 			sourceTree = "<group>";
 		};
+		E18F31E22C35BDE8007EF81D /* Response */ = {
+			isa = PBXGroup;
+			children = (
+				E18F4F7F2C2C2301007EF81D /* ResponseModel.swift */,
+				E18F31E02C35B90A007EF81D /* LastPriceResponseModel.swift */,
+				E18F31E62C35D1B9007EF81D /* SubscribeLastPriceResponse.swift */,
+			);
+			path = Response;
+			sourceTree = "<group>";
+		};
+		E18F31E32C35BDF3007EF81D /* Message */ = {
+			isa = PBXGroup;
+			children = (
+				E18F31E42C35BE2A007EF81D /* LastPriceMessageModel.swift */,
+			);
+			path = Message;
+			sourceTree = "<group>";
+		};
 		E18F4F792C2C2263007EF81D /* Network */ = {
 			isa = PBXGroup;
 			children = (
@@ -118,7 +142,8 @@
 		E18F4F7E2C2C22C4007EF81D /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				E18F4F7F2C2C2301007EF81D /* ResponseModel.swift */,
+				E18F31E32C35BDF3007EF81D /* Message */,
+				E18F31E22C35BDE8007EF81D /* Response */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -214,12 +239,15 @@
 			files = (
 				E18FCD8D2C2C5348007EF81D /* InvestURLFactrory.swift in Sources */,
 				E18FCD922C2DA6F6007EF81D /* ShareDetailView.swift in Sources */,
+				E18F31E12C35B90A007EF81D /* LastPriceResponseModel.swift in Sources */,
 				E18F4F7B2C2C227E007EF81D /* RequestExecutor.swift in Sources */,
 				E157820F2C245207002F0E3C /* SharesListView.swift in Sources */,
 				E18FCD8F2C2C5362007EF81D /* InvestRequestFactory.swift in Sources */,
+				E18F31E72C35D1B9007EF81D /* SubscribeLastPriceResponse.swift in Sources */,
 				E15782112C246DD8002F0E3C /* SharesListViewModel.swift in Sources */,
 				E18F4F782C2C2213007EF81D /* InstrumentModel.swift in Sources */,
 				E18FCD942C2DA712007EF81D /* ShareDetailViewModel.swift in Sources */,
+				E18F31E52C35BE2A007EF81D /* LastPriceMessageModel.swift in Sources */,
 				0795FD542C223F6400A3A0BE /* MainView.swift in Sources */,
 				0795FD522C223F6400A3A0BE /* InvestPetAppApp.swift in Sources */,
 				E18F4F802C2C2301007EF81D /* ResponseModel.swift in Sources */,

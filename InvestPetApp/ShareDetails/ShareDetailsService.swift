@@ -15,121 +15,40 @@ private extension String {
     static let protocolValue = "json"
 }
 
-final class ShareDetailsService: NSObject {
+final class ShareDetailsService: NSObject, ObservableObject, URLSessionWebSocketDelegate {
     
     private var socket: URLSessionWebSocketTask?
     private lazy var urlSession = URLSession(configuration: .default, delegate: self, delegateQueue: nil)
-    private var task: Task<Void, Error>?
     private var isConnected = false
     
-    deinit {
-        socket?.cancel()
-        socket = nil
-    }
+    @Published var lastPrice: LastPrice?
+    
+    // MARK: - Internal
     
     func loadShareDetails() async throws {
+        guard !isConnected else { return }
         try createTask()
-        socket?.resume()
-//        try await sendData()
-//        try await ping()
         try await receiveData()
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-            self.cancelConnection()
-        }
     }
     
     func cancelConnection() {
         socket?.cancel(with: .goingAway, reason: nil)
     }
     
-    private func createTask() throws {
-        guard let url = URL(string: "\(String.host)\(String.subURL)") else {
-            throw NSError()
-        }
-        
-        var request = URLRequest(url: url)
-        request.httpMethod = "GET"
-        request.addValue("Bearer \(String.token)", forHTTPHeaderField: "Authorization")
-        request.addValue("json", forHTTPHeaderField: "Sec-WebSocket-Protocol")
-        
-        socket = urlSession.webSocketTask(with: request)
-    }
-    
-    private func sendData() {
-        let model = SubscribeLastPriceRequestWrapper(
-            subscribeLastPriceRequest: SubscribeLastPriceRequest(
-                subscriptionAction: "SUBSCRIPTION_ACTION_SUBSCRIBE",
-                instruments: [Instrument(instrumentId: "e6123145-9665-43e0-8413-cd61b8aa9b13")]
-            )
-        )
-        
-        let data: Data?
-        do {
-            data = try JSONEncoder().encode(model)
-        } catch {
-            print(error.localizedDescription)
-            return
-        }
-        
-        guard let data else { return }
-        Task {
-            try await socket?.send(.data(data))
-        }
-    }
-    
-    private func receiveData() async throws {
-        let message = try await socket?.receive()
-        
-        switch message {
-        case .string(let string):
-            print(string)
-        case .data(let data):
-            print(data)
-        default:
-            fatalError("Получено неожиданное сообщение.")
-     
-        }
-        try await receiveData()
-    }
-    
-    private func ping() async throws {
-        guard isConnected else { return }
-        let serverDateFormatter: DateFormatter = {
-            let result = DateFormatter()
-            result.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSS"
-            result.timeZone = .current
-            return result
-        }()
-        
-        print(serverDateFormatter.string(from: Date()))
-        
-        let json = [
-            "ping": [
-                "time": serverDateFormatter.string(from: Date())
-            ]
-        ]
-        
-        let data = try JSONSerialization.data(withJSONObject: json)
-        
-        task = Task {
-            guard let task, !task.isCancelled else { return }
-            try await Task.sleep(nanoseconds: 50_000_000) // 50 ms
-            try await socket?.send(.data(data))
-            try await ping()
-        }
-    }
-}
-
-extension ShareDetailsService: URLSessionWebSocketDelegate {
+    // MARK: - URLSessionWebSocketDelegate
     
     func urlSession(
         _ session: URLSession,
         webSocketTask: URLSessionWebSocketTask,
         didOpenWithProtocol protocol: String?
     ) {
-        print("Connection is opened.")
         isConnected = true
-        sendData()
+        do {
+            try sendData()
+        } catch {
+            print(error)
+        }
+        print("Connection is opened.")
     }
     
     func urlSession(
@@ -139,23 +58,81 @@ extension ShareDetailsService: URLSessionWebSocketDelegate {
         reason: Data?
     ) {
         let reason = String(data: reason!, encoding: .utf8)
-        print("Connection was closed. Close code: \(closeCode). Reason: \(String(describing: reason))")
         isConnected = false
-        task?.cancel()
+        print("Connection was closed. Close code: \(closeCode). Reason: \(String(describing: reason))")
+    }
+    
+    // MARK: - Private
+    
+    private func createTask() throws {
+        guard let url = URL(string: "\(String.host)\(String.subURL)") else {
+            throw ServicesError.creatingURLError
+        }
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        request.addValue("Bearer \(String.token)", forHTTPHeaderField: "Authorization")
+        request.addValue("json", forHTTPHeaderField: "Sec-WebSocket-Protocol")
+        
+        socket = urlSession.webSocketTask(with: request)
+        socket?.resume()
+    }
+    
+    private func sendData() throws {
+        let model = SubscribeLastPriceMessageWrapper(
+            subscribeLastPriceRequest: SubscribeLastPriceMessage(
+                subscriptionAction: "SUBSCRIPTION_ACTION_SUBSCRIBE",
+                instruments: [Instrument(instrumentId: "e6123145-9665-43e0-8413-cd61b8aa9b13")]
+            )
+        )
+        
+        let message: Data?
+        do {
+            message = try JSONEncoder().encode(model)
+        } catch {
+            throw ServicesError.dataEncodingError
+        }
+        
+        guard let message else { return }
+        Task {
+            try await socket?.send(.data(message))
+        }
+    }
+    
+    private func receiveData() async throws {
+        let message = try await socket?.receive()
+        
+        guard isConnected else { return }
+        switch message {
+        case .string(let data):
+            try handleMessage(from: data)
+        default:
+            throw ServicesError.unexpectedFrameData
+        }
+        try await receiveData()
+    }
+    
+    private func handleMessage(from string: String) throws {
+        guard let data = string.data(using: .utf8) else {
+            throw ServicesError.messageEncodingError
+        }
+        
+        
+        if let model = try? JSONDecoder().decode(SubscribeLastPriceResponseWrapper.self, from: data){
+            print(model)
+        } else if let model = try? JSONDecoder().decode(LastPriceResponse.self, from: data) {
+            lastPrice = model.lastPrice
+            print(model)
+        } else {
+            throw ServicesError.messageDecodingError
+        }
     }
 }
 
-struct SubscribeLastPriceRequestWrapper: Codable {
-    let subscribeLastPriceRequest: SubscribeLastPriceRequest
-}
-
-// Модель данных подписки на последнюю цену
-struct SubscribeLastPriceRequest: Codable {
-    let subscriptionAction: String
-    let instruments: [Instrument]
-}
-
-// Модель инструмента
-struct Instrument: Codable {
-    let instrumentId: String
+enum ServicesError: Error {
+    case unexpectedFrameData
+    case dataEncodingError
+    case messageEncodingError
+    case messageDecodingError
+    case creatingURLError
 }

@@ -12,10 +12,19 @@ struct ShareDetailView: View {
     @ObservedObject var viewModel: ShareDetailViewModel
     
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
-            .task {
-                viewModel.loadShareDetails()
+        
+        switch viewModel.shareDetailModel {
+        case .data(model: let lastPrice):
+            VStack {
+                Text(lastPrice.price.units)
+                Text(lastPrice.time)
             }
+        case .empty(model: let emptyModel):
+            Text(emptyModel.title)
+                .task {
+                    viewModel.loadShareDetails()
+                }
+        }
     }
 }
 
