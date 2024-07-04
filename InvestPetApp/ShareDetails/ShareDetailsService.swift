@@ -32,7 +32,7 @@ final class ShareDetailsService: NSObject, ObservableObject, URLSessionWebSocket
     }
     
     func cancelConnection() {
-        socket?.cancel(with: .goingAway, reason: nil)
+        socket?.cancel()
     }
     
     // MARK: - URLSessionWebSocketDelegate
@@ -57,9 +57,8 @@ final class ShareDetailsService: NSObject, ObservableObject, URLSessionWebSocket
         didCloseWith closeCode: URLSessionWebSocketTask.CloseCode,
         reason: Data?
     ) {
-        let reason = String(data: reason!, encoding: .utf8)
         isConnected = false
-        print("Connection was closed. Close code: \(closeCode). Reason: \(String(describing: reason))")
+        print("Connection was closed. Close code: \(closeCode).)")
     }
     
     // MARK: - Private

@@ -10,20 +10,35 @@ import SwiftUI
 struct ShareDetailView: View {
     
     @ObservedObject var viewModel: ShareDetailViewModel
+    @Environment(\.dismiss) private var dismiss
     
     var body: some View {
         
-        switch viewModel.shareDetailModel {
-        case .data(model: let lastPrice):
-            VStack {
+        VStack {
+            switch viewModel.shareDetailModel {
+            case .data(model: let lastPrice):
                 Text(lastPrice.price.units)
                 Text(lastPrice.time)
+            case .empty(model: let emptyModel):
+                Text(emptyModel.title)
+                    .task {
+                        viewModel.loadShareDetails()
+                    }
             }
-        case .empty(model: let emptyModel):
-            Text(emptyModel.title)
-                .task {
-                    viewModel.loadShareDetails()
+        }
+        .navigationBarBackButtonHidden(true)
+        .toolbar {
+            ToolbarItem(placement: .navigationBarLeading) {
+                Button {
+                    dismiss()
+                    viewModel.cancelConnection()
+                } label: {
+                    HStack {
+                        Image(systemName: "chevron.backward")
+                        Text("Back")
+                    }
                 }
+            }
         }
     }
 }
