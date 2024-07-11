@@ -24,7 +24,7 @@ struct SharesListView: View {
             
             List(viewModel.instrumentsList, id: \.self) { instrument in
                 NavigationLink {
-                    ShareDetailView(viewModel: ShareDetailViewModel())
+                    ShareDetailView(viewModel: ShareDetailViewModel(shareDetailsService: ShareDetailsService(shareId: instrument.id)))
                 } label: {
                     InstrumentView(instrument: instrument)
                 }

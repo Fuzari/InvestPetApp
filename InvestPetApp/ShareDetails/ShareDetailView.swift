@@ -21,8 +21,8 @@ struct ShareDetailView: View {
                 Text(lastPrice.time)
             case .empty(model: let emptyModel):
                 Text(emptyModel.title)
-                    .task {
-                        viewModel.loadShareDetails()
+                    .onAppear {
+                        viewModel.onAppear()
                     }
             }
         }
@@ -44,5 +44,5 @@ struct ShareDetailView: View {
 }
 
 #Preview {
-    ShareDetailView(viewModel: ShareDetailViewModel())
+    ShareDetailView(viewModel: ShareDetailViewModel(shareDetailsService: ShareDetailsService(shareId: "")))
 }

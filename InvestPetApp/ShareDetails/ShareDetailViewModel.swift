@@ -10,20 +10,27 @@ import Combine
 
 @MainActor final class ShareDetailViewModel: ObservableObject {
     
-    private let shareDetailsService = ShareDetailsService()
+    // Dependencies
+    private let shareDetailsService: ShareDetailsService
+    
+    // Private
     private var cancellables = Set<AnyCancellable>()
     
     @Published var shareDetailModel: ShareDetailModel = .empty(model: EmptyModel(title: "Данных пока нет."))
     
-    func loadShareDetails() {
+    // MARK: - Initialization
+    
+    init(shareDetailsService: ShareDetailsService) {
+        self.shareDetailsService = shareDetailsService
+    }
+    
+    // MARK: - Internal
+    
+    func onAppear() {
         setupBindings()
         
         Task {
-            do {
-                try await shareDetailsService.loadShareDetails()
-            } catch {
-                print(error)
-            }
+            await loadShareDetails()
         }
     }
     
@@ -31,19 +38,33 @@ import Combine
         shareDetailsService.cancelConnection()
     }
     
-    private func setupBindings() {
-            // Устанавливаем подписку на изменения lastPrice из сервиса
-        shareDetailsService.$lastPrice
-                // Убедимся, что обновление идет в основном потоке, так как мы обновляем UI
-                .receive(on: RunLoop.main)
-                // Наблюдаем за изменениями
-                .sink { [weak self] newLastPrice in
-                    // Обновляем shareDetailModel, когда получаем новое значение lastPrice
-                    self?.shareDetailModel = newLastPrice != nil ? .data(model: newLastPrice!) : .empty(model: EmptyModel(title: "Данных пока нет."))
-                }
-                // Сохраняем подписку
-                .store(in: &cancellables)
+    // MARK: - Private
+    
+    private func loadShareDetails() async {
+        do {
+            try await shareDetailsService.loadShareDetails()
+        } catch {
+            print(error)
         }
+    }
+    
+    private func setupBindings() {
+        shareDetailsService.$lastPrice
+            .receive(on: RunLoop.main)
+            .sink { [weak self] lastPrice in
+                self?.handle(published: lastPrice)
+            }
+            .store(in: &cancellables)
+    }
+    
+    private func handle(published value: Published<LastPrice?>.Publisher.Output) {
+        guard let value else {
+            shareDetailModel = .empty(model: EmptyModel(title: "Данных пока нет."))
+            return
+        }
+        
+        shareDetailModel = .data(model: value)
+    }
 }
 
 
