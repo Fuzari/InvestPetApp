@@ -10,12 +10,12 @@ import Foundation
 final class SharesService: NSObject {
     
     private let executor = RequestExecutor()
-    private let requestsFactory = InvestRequestFactory()
-    private let urlFactory = InvestURLFactrory()
+    private let requestsFactory = SharesListRequestFactory()
+    private let urlFactory = SharesListURLFactory()
     
     func loadShares() async throws -> [InstrumentModel] {
-        let url = try urlFactory.makeFindIntrumentURL()
-        let request = try requestsFactory.makeFindInstrumentsRequest(with: url)
+        let url = try urlFactory.makeURL()
+        let request = try requestsFactory.makeRequest(with: url)
         let models = try await executor.execute(request, for: InstrumentsResponseModel.self)
         return models
     }

@@ -7,21 +7,25 @@
 
 import Foundation
 
-private extension String {
-    static let host = "wss://invest-public-api.tinkoff.ru/ws"
-    static let subURL = "/tinkoff.public.invest.api.contract.v1.MarketDataStreamService/MarketDataStream"
-    static let token = "t.L8UWFin0Kkc9bmdatEA24Av096x_279VfN05JkMI2kz_t4P7eEIgikCw6YvhCfPrMbSoe_ceLbpU22un3UJqCw"
-    static let protocolHeader = "Sec-WebSocket-Protocol"
-    static let protocolValue = "json"
-}
-
 final class ShareDetailsService: NSObject, ObservableObject, URLSessionWebSocketDelegate {
     
+    // Dependencies
+    private let urlFactory = ShareDetailsURLFactory()
+    private let requestFactory = ShareDetailsRequestFactory()
+    
+    // Private
     private var socket: URLSessionWebSocketTask?
     private lazy var urlSession = URLSession(configuration: .default, delegate: self, delegateQueue: nil)
     private var isConnected = false
+    private let shareId: String
     
     @Published var lastPrice: LastPrice?
+    
+    // MARK: - Initialization
+    
+    init(shareId: String) {
+        self.shareId = shareId
+    }
     
     // MARK: - Internal
     
@@ -33,6 +37,7 @@ final class ShareDetailsService: NSObject, ObservableObject, URLSessionWebSocket
     
     func cancelConnection() {
         socket?.cancel()
+        isConnected = false
     }
     
     // MARK: - URLSessionWebSocketDelegate
@@ -64,15 +69,8 @@ final class ShareDetailsService: NSObject, ObservableObject, URLSessionWebSocket
     // MARK: - Private
     
     private func createTask() throws {
-        guard let url = URL(string: "\(String.host)\(String.subURL)") else {
-            throw ServicesError.creatingURLError
-        }
-        
-        var request = URLRequest(url: url)
-        request.httpMethod = "GET"
-        request.addValue("Bearer \(String.token)", forHTTPHeaderField: "Authorization")
-        request.addValue("json", forHTTPHeaderField: "Sec-WebSocket-Protocol")
-        
+        let url = try urlFactory.makeURL()
+        let request = requestFactory.makeRequest(with: url)
         socket = urlSession.webSocketTask(with: request)
         socket?.resume()
     }
@@ -81,7 +79,7 @@ final class ShareDetailsService: NSObject, ObservableObject, URLSessionWebSocket
         let model = SubscribeLastPriceMessageWrapper(
             subscribeLastPriceRequest: SubscribeLastPriceMessage(
                 subscriptionAction: "SUBSCRIPTION_ACTION_SUBSCRIBE",
-                instruments: [Instrument(instrumentId: "e6123145-9665-43e0-8413-cd61b8aa9b13")]
+                instruments: [Instrument(instrumentId: shareId)]
             )
         )
         
@@ -117,7 +115,7 @@ final class ShareDetailsService: NSObject, ObservableObject, URLSessionWebSocket
         }
         
         
-        if let model = try? JSONDecoder().decode(SubscribeLastPriceResponseWrapper.self, from: data){
+        if let model = try? JSONDecoder().decode(SubscribeLastPriceResponseWrapper.self, from: data) {
             print(model)
         } else if let model = try? JSONDecoder().decode(LastPriceResponse.self, from: data) {
             lastPrice = model.lastPrice

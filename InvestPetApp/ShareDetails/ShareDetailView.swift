@@ -16,14 +16,11 @@ struct ShareDetailView: View {
         
         VStack {
             switch viewModel.shareDetailModel {
-            case .data(model: let lastPrice):
-                Text(lastPrice.price.units)
-                Text(lastPrice.time)
+            case .data(model: let model):
+                Text(model.title)
+                Text(model.subtitle)
             case .empty(model: let emptyModel):
                 Text(emptyModel.title)
-                    .task {
-                        viewModel.loadShareDetails()
-                    }
             }
         }
         .navigationBarBackButtonHidden(true)
@@ -40,9 +37,19 @@ struct ShareDetailView: View {
                 }
             }
         }
+        .onAppear {
+            viewModel.onAppear()
+        }
     }
 }
 
 #Preview {
-    ShareDetailView(viewModel: ShareDetailViewModel())
+    ShareDetailView(
+        viewModel: ShareDetailViewModel(
+            instrument: InstrumentModel(),
+            shareDetailsService: ShareDetailsService(
+                shareId: ""
+            )
+        )
+    )
 }

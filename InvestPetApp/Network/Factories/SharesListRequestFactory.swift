@@ -1,5 +1,5 @@
 //
-//  InvestRequestFactory.swift
+//  SharesListRequestFactory..swift
 //  InvestPetApp
 //
 //  Created by Andrey Yakovlev on 26.06.2024.
@@ -16,9 +16,9 @@ private extension String {
     static let acceptHeader = "accept"
 }
 
-final class InvestRequestFactory {
+final class SharesListRequestFactory {
     
-    func makeFindInstrumentsRequest(with url: URL) throws -> URLRequest {
+    func makeRequest(with url: URL) throws -> URLRequest {
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.addValue(.authorizationValue, forHTTPHeaderField: .authorizationHeader)
