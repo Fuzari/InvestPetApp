@@ -12,6 +12,7 @@ import Combine
     
     // Dependencies
     private let shareDetailsService: ShareDetailsService
+    private let instrument: InstrumentModel
     
     // Private
     private var cancellables = Set<AnyCancellable>()
@@ -20,7 +21,8 @@ import Combine
     
     // MARK: - Initialization
     
-    init(shareDetailsService: ShareDetailsService) {
+    init(instrument: InstrumentModel, shareDetailsService: ShareDetailsService) {
+        self.instrument = instrument
         self.shareDetailsService = shareDetailsService
     }
     
@@ -63,16 +65,27 @@ import Combine
             return
         }
         
-        shareDetailModel = .data(model: value)
+        shareDetailModel = .data(model: makeShareDetailUIModel(from: value))
+    }
+    
+    private func makeShareDetailUIModel(from priceModel: LastPrice) -> ShareDetailUIModel {
+        let decimalPoint = String(String(priceModel.price.nano).prefix(3))
+        let subtitle = "\(priceModel.price.units).\(decimalPoint)"
+        return ShareDetailUIModel(title: instrument.name, subtitle: subtitle)
     }
 }
 
 
 enum ShareDetailModel {
     case empty(model: EmptyModel)
-    case data(model: LastPrice)
+    case data(model: ShareDetailUIModel)
 }
 
 struct EmptyModel {
     let title: String
+}
+
+struct ShareDetailUIModel {
+    let title: String
+    let subtitle: String
 }

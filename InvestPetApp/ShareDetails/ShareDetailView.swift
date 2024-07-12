@@ -16,8 +16,9 @@ struct ShareDetailView: View {
         
         VStack {
             switch viewModel.shareDetailModel {
-            case .data(model: let lastPrice):
-                Text("\(lastPrice.price.units).\(lastPrice.price.nanoPrefix)")
+            case .data(model: let model):
+                Text(model.title)
+                Text(model.subtitle)
             case .empty(model: let emptyModel):
                 Text(emptyModel.title)
             }
@@ -43,5 +44,12 @@ struct ShareDetailView: View {
 }
 
 #Preview {
-    ShareDetailView(viewModel: ShareDetailViewModel(shareDetailsService: ShareDetailsService(shareId: "")))
+    ShareDetailView(
+        viewModel: ShareDetailViewModel(
+            instrument: InstrumentModel(),
+            shareDetailsService: ShareDetailsService(
+                shareId: ""
+            )
+        )
+    )
 }

@@ -33,4 +33,11 @@ struct InstrumentModel: Decodable, Identifiable, Hashable {
         let kindValue = try container.decode(String.self, forKey: .instrumentKind)
         instrumentKind = InstrumentKind(rawValue: kindValue)
     }
+    
+    init() {
+        id = ""
+        name = "ShareName"
+        ticker = "Ticker"
+        instrumentKind = nil
+    }
 }
