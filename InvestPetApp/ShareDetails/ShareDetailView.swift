@@ -17,13 +17,9 @@ struct ShareDetailView: View {
         VStack {
             switch viewModel.shareDetailModel {
             case .data(model: let lastPrice):
-                Text(lastPrice.price.units)
-                Text(lastPrice.time)
+                Text("\(lastPrice.price.units).\(lastPrice.price.nanoPrefix)")
             case .empty(model: let emptyModel):
                 Text(emptyModel.title)
-                    .onAppear {
-                        viewModel.onAppear()
-                    }
             }
         }
         .navigationBarBackButtonHidden(true)
@@ -39,6 +35,9 @@ struct ShareDetailView: View {
                     }
                 }
             }
+        }
+        .onAppear {
+            viewModel.onAppear()
         }
     }
 }

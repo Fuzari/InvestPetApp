@@ -10,6 +10,11 @@ import Foundation
 struct Price: Codable {
     let units: String
     let nano: Int
+    
+    var nanoPrefix: String {
+        let nano = String(nano)
+        return String(nano.prefix(3))
+    }
 }
 
 struct LastPrice: Codable {

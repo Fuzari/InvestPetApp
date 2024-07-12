@@ -37,6 +37,7 @@ final class ShareDetailsService: NSObject, ObservableObject, URLSessionWebSocket
     
     func cancelConnection() {
         socket?.cancel()
+        isConnected = false
     }
     
     // MARK: - URLSessionWebSocketDelegate
