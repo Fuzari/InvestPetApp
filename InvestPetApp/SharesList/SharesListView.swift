@@ -10,6 +10,13 @@ import SwiftUI
 struct SharesListView: View {
     @ObservedObject var viewModel: SharesListViewModel
     
+    private let token: String
+    
+    init(token: String) {
+        self.token = token
+        self.viewModel = SharesListViewModel(token: token)
+    }
+    
     var body: some View {
         switch viewModel.instrumentsList.count {
         case 0:
@@ -24,14 +31,7 @@ struct SharesListView: View {
             
             List(viewModel.instrumentsList, id: \.self) { instrument in
                 NavigationLink {
-                    ShareDetailView(
-                        viewModel: ShareDetailViewModel(
-                            instrument: instrument,
-                            shareDetailsService: ShareDetailsService(
-                                shareId: instrument.id
-                            )
-                        )
-                    )
+                    ShareDetailView(token: token, instrument: instrument)
                 } label: {
                     InstrumentView(instrument: instrument)
                 }
@@ -55,5 +55,5 @@ struct InstrumentView: View {
 }
 
 #Preview {
-    SharesListView(viewModel: SharesListViewModel())
+    SharesListView(token: "token")
 }

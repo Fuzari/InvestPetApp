@@ -21,9 +21,9 @@ import Combine
     
     // MARK: - Initialization
     
-    init(instrument: InstrumentModel, shareDetailsService: ShareDetailsService) {
+    init(token: String, instrument: InstrumentModel) {
         self.instrument = instrument
-        self.shareDetailsService = shareDetailsService
+        self.shareDetailsService = ShareDetailsService(token: token, shareId: instrument.id)
     }
     
     // MARK: - Internal

@@ -15,7 +15,7 @@
 		E11440652C3F00870017BA8A /* ShareDetailsRequestFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = E11440642C3F00870017BA8A /* ShareDetailsRequestFactory.swift */; };
 		E157820F2C245207002F0E3C /* SharesListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E157820E2C245207002F0E3C /* SharesListView.swift */; };
 		E15782112C246DD8002F0E3C /* SharesListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E15782102C246DD8002F0E3C /* SharesListViewModel.swift */; };
-		E15782142C25976B002F0E3C /* SharesService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E15782132C25976B002F0E3C /* SharesService.swift */; };
+		E15782142C25976B002F0E3C /* SharesListService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E15782132C25976B002F0E3C /* SharesListService.swift */; };
 		E18F31E12C35B90A007EF81D /* LastPriceResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E18F31E02C35B90A007EF81D /* LastPriceResponseModel.swift */; };
 		E18F31E52C35BE2A007EF81D /* LastPriceMessageModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E18F31E42C35BE2A007EF81D /* LastPriceMessageModel.swift */; };
 		E18F31E72C35D1B9007EF81D /* SubscribeLastPriceResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = E18F31E62C35D1B9007EF81D /* SubscribeLastPriceResponse.swift */; };
@@ -39,7 +39,7 @@
 		E11440642C3F00870017BA8A /* ShareDetailsRequestFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareDetailsRequestFactory.swift; sourceTree = "<group>"; };
 		E157820E2C245207002F0E3C /* SharesListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharesListView.swift; sourceTree = "<group>"; };
 		E15782102C246DD8002F0E3C /* SharesListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharesListViewModel.swift; sourceTree = "<group>"; };
-		E15782132C25976B002F0E3C /* SharesService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharesService.swift; sourceTree = "<group>"; };
+		E15782132C25976B002F0E3C /* SharesListService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharesListService.swift; sourceTree = "<group>"; };
 		E18F31E02C35B90A007EF81D /* LastPriceResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LastPriceResponseModel.swift; sourceTree = "<group>"; };
 		E18F31E42C35BE2A007EF81D /* LastPriceMessageModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LastPriceMessageModel.swift; sourceTree = "<group>"; };
 		E18F31E62C35D1B9007EF81D /* SubscribeLastPriceResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscribeLastPriceResponse.swift; sourceTree = "<group>"; };
@@ -109,7 +109,7 @@
 			children = (
 				E157820E2C245207002F0E3C /* SharesListView.swift */,
 				E15782102C246DD8002F0E3C /* SharesListViewModel.swift */,
-				E15782132C25976B002F0E3C /* SharesService.swift */,
+				E15782132C25976B002F0E3C /* SharesListService.swift */,
 				E18F4F772C2C2213007EF81D /* InstrumentModel.swift */,
 			);
 			path = SharesList;
@@ -260,7 +260,7 @@
 				E18F4F802C2C2301007EF81D /* ResponseModel.swift in Sources */,
 				E18FCD962C2DA774007EF81D /* ShareDetailsService.swift in Sources */,
 				E11440652C3F00870017BA8A /* ShareDetailsRequestFactory.swift in Sources */,
-				E15782142C25976B002F0E3C /* SharesService.swift in Sources */,
+				E15782142C25976B002F0E3C /* SharesListService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

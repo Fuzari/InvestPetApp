@@ -8,14 +8,23 @@
 import Foundation
 
 @MainActor final class SharesListViewModel: ObservableObject {
+    
+    // Internal
     @Published var instrumentsList: [InstrumentModel] = []
     
-    private let sharesService = SharesService()
+    // Dependencies
+    private let sharesListService: SharesListService
+    
+    init(token: String) {
+        sharesListService = SharesListService(token: token)
+    }
+    
+    // MARK: - Internal
     
     func loadShares() {
         Task {
             do {
-                instrumentsList = try await sharesService.loadShares()
+                instrumentsList = try await sharesListService.loadShares()
             } catch {
                 print(error.localizedDescription)
             }

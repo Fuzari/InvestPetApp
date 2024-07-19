@@ -8,16 +8,32 @@
 import SwiftUI
 
 struct MainView: View {
+    
+    @State private var inputText: String = ""
+    
     var body: some View {
         NavigationStack {
+            Spacer()
             Text("Сервис для получения последних сделок по инструментам")
-                .font(.headline)
+                .font(.title2)
                 .multilineTextAlignment(.center)
-                .padding(.bottom, 30)
+            
+            Spacer()
+            Spacer()
+            
+            TextField("Токен доступа к API", text: $inputText)
+                .textInputAutocapitalization(.never)
+                .autocorrectionDisabled()
+                .textFieldStyle(.roundedBorder)
+                .font(.system(.title3))
+                .padding([.horizontal, .bottom], 30)
+            
             
             NavigationLink("Начать работу") {
-                SharesListView(viewModel: SharesListViewModel())
+                SharesListView(token: inputText)
             }
+            
+            Spacer()
         }
     }
 }

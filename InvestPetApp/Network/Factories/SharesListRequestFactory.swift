@@ -8,9 +8,8 @@
 import Foundation
 
 private extension String {
-    static let token = "t.L8UWFin0Kkc9bmdatEA24Av096x_279VfN05JkMI2kz_t4P7eEIgikCw6YvhCfPrMbSoe_ceLbpU22un3UJqCw"
     static let authorizationHeader = "Authorization"
-    static let authorizationValue = "Bearer \(String.token)"
+    static let authorizationValue = "Bearer"
     static let contentTypeHeader = "Content-Type"
     static let contentTypeValue = "application/json"
     static let acceptHeader = "accept"
@@ -18,10 +17,19 @@ private extension String {
 
 final class SharesListRequestFactory {
     
+    // Private
+    private let token: String
+    
+    // MARK: - Initialization
+    
+    init(token: String) {
+        self.token = token
+    }
+    
     func makeRequest(with url: URL) throws -> URLRequest {
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
-        request.addValue(.authorizationValue, forHTTPHeaderField: .authorizationHeader)
+        request.addValue("\(String.authorizationValue) \(token)", forHTTPHeaderField: .authorizationHeader)
         request.addValue(.contentTypeValue, forHTTPHeaderField: .contentTypeHeader)
         request.addValue(.contentTypeValue, forHTTPHeaderField: .acceptHeader)
         

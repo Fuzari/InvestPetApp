@@ -11,7 +11,7 @@ final class ShareDetailsService: NSObject, ObservableObject, URLSessionWebSocket
     
     // Dependencies
     private let urlFactory = ShareDetailsURLFactory()
-    private let requestFactory = ShareDetailsRequestFactory()
+    private let requestFactory: ShareDetailsRequestFactory
     
     // Private
     private var socket: URLSessionWebSocketTask?
@@ -23,8 +23,9 @@ final class ShareDetailsService: NSObject, ObservableObject, URLSessionWebSocket
     
     // MARK: - Initialization
     
-    init(shareId: String) {
+    init(token: String, shareId: String) {
         self.shareId = shareId
+        self.requestFactory = ShareDetailsRequestFactory(token: token)
     }
     
     // MARK: - Internal

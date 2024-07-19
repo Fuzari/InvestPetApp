@@ -12,6 +12,11 @@ struct ShareDetailView: View {
     @ObservedObject var viewModel: ShareDetailViewModel
     @Environment(\.dismiss) private var dismiss
     
+    init(token: String, instrument: InstrumentModel) {
+        self.viewModel = ShareDetailViewModel(token: token,
+                                              instrument: instrument)
+    }
+    
     var body: some View {
         
         VStack {
@@ -44,12 +49,5 @@ struct ShareDetailView: View {
 }
 
 #Preview {
-    ShareDetailView(
-        viewModel: ShareDetailViewModel(
-            instrument: InstrumentModel(),
-            shareDetailsService: ShareDetailsService(
-                shareId: ""
-            )
-        )
-    )
+    ShareDetailView(token: "", instrument: InstrumentModel())
 }
